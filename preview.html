@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EatSimply — Simple, nourishing meals</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green: #3a7d44;
+      --green-light: #e8f5eb;
+      --green-mid: #c5e0c9;
+      --amber: #e07b39;
+      --text: #1a1a1a;
+      --text-muted: #6b7280;
+      --border: #e5e7eb;
+      --bg: #fafaf8;
+      --white: #ffffff;
+      --radius: 12px;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    /* NAV */
+    nav {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .nav-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--green);
+      text-decoration: none;
+    }
+    .logo svg { width: 28px; height: 28px; }
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color .15s;
+    }
+    .nav-links a:hover { color: var(--green); }
+    .nav-cta {
+      background: var(--green);
+      color: var(--white) !important;
+      padding: 8px 18px;
+      border-radius: 8px;
+      font-weight: 600 !important;
+    }
+    .nav-cta:hover { background: #2f6737; color: var(--white) !important; }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(135deg, #f0f7f1 0%, #fefce8 100%);
+      padding: 96px 24px 80px;
+      text-align: center;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: var(--green-light);
+      color: var(--green);
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+    .hero h1 {
+      font-size: clamp(2.2rem, 5vw, 3.6rem);
+      font-weight: 800;
+      line-height: 1.1;
+      max-width: 640px;
+      margin: 0 auto 20px;
+      color: var(--text);
+    }
+    .hero h1 span { color: var(--green); }
+    .hero p {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      max-width: 520px;
+      margin: 0 auto 36px;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      background: var(--green);
+      color: var(--white);
+      padding: 14px 28px;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: background .15s, transform .1s;
+    }
+    .btn-primary:hover { background: #2f6737; transform: translateY(-1px); }
+    .btn-secondary {
+      background: var(--white);
+      color: var(--text);
+      padding: 14px 28px;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 600;
+      border: 2px solid var(--border);
+      cursor: pointer;
+      text-decoration: none;
+      transition: border-color .15s, transform .1s;
+    }
+    .btn-secondary:hover { border-color: var(--green); transform: translateY(-1px); }
+    .hero-stats {
+      display: flex;
+      gap: 40px;
+      justify-content: center;
+      margin-top: 56px;
+      flex-wrap: wrap;
+    }
+    .stat { text-align: center; }
+    .stat-num { font-size: 2rem; font-weight: 800; color: var(--green); }
+    .stat-label { font-size: 0.85rem; color: var(--text-muted); margin-top: 2px; }
+
+    section { padding: 80px 24px; }
+    .section-inner { max-width: 1120px; margin: 0 auto; }
+    .section-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 10px;
+    }
+    .section-title {
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+    .section-sub {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 520px;
+      margin-bottom: 48px;
+    }
+
+    .how-bg { background: var(--white); }
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 32px;
+    }
+    .step { text-align: center; padding: 32px 24px; }
+    .step-icon {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: var(--green-light);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 16px; font-size: 1.8rem;
+    }
+    .step h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; }
+    .step p { font-size: 0.9rem; color: var(--text-muted); }
+
+    .recipe-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+    }
+    .recipe-card {
+      background: var(--white); border-radius: var(--radius);
+      border: 1px solid var(--border); overflow: hidden;
+      transition: box-shadow .2s, transform .2s;
+    }
+    .recipe-card:hover { box-shadow: 0 8px 30px rgba(0,0,0,.09); transform: translateY(-3px); }
+    .recipe-img { height: 180px; display: flex; align-items: center; justify-content: center; font-size: 3.5rem; }
+    .recipe-body { padding: 16px; }
+    .recipe-tag {
+      font-size: 0.72rem; font-weight: 600; text-transform: uppercase;
+      letter-spacing: .06em; color: var(--green); background: var(--green-light);
+      padding: 2px 8px; border-radius: 20px; display: inline-block; margin-bottom: 8px;
+    }
+    .recipe-title { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+    .recipe-meta { display: flex; gap: 16px; font-size: 0.82rem; color: var(--text-muted); margin-bottom: 14px; }
+    .recipe-actions { display: flex; gap: 8px; }
+    .btn-sm { padding: 7px 14px; border-radius: 8px; font-size: 0.82rem; font-weight: 600; cursor: pointer; border: none; transition: background .15s; }
+    .btn-sm-primary { background: var(--green); color: var(--white); }
+    .btn-sm-primary:hover { background: #2f6737; }
+    .btn-sm-outline { background: transparent; color: var(--text); border: 1.5px solid var(--border); }
+    .btn-sm-outline:hover { border-color: var(--green); color: var(--green); }
+
+    .plan-bg { background: linear-gradient(135deg, #f0f7f1 0%, #fafaf8 100%); }
+    .plan-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+    @media (max-width: 700px) { .plan-grid { grid-template-columns: 1fr; } }
+    .plan-table { background: var(--white); border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,.06); }
+    .plan-header { background: var(--green); color: var(--white); padding: 14px 20px; font-weight: 700; font-size: 0.95rem; }
+    .plan-row { display: grid; grid-template-columns: 80px 1fr 80px; padding: 12px 20px; border-bottom: 1px solid var(--border); font-size: 0.88rem; align-items: center; }
+    .plan-row:last-child { border-bottom: none; }
+    .plan-day { font-weight: 600; color: var(--text-muted); font-size: 0.8rem; }
+    .plan-kcal { text-align: right; color: var(--text-muted); font-size: 0.82rem; }
+
+    .nut-card { background: var(--white); border-radius: var(--radius); border: 1px solid var(--border); padding: 24px; }
+    .nut-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 20px; }
+    .nut-bar-row { margin-bottom: 16px; }
+    .nut-bar-label { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 6px; }
+    .nut-bar-label span:first-child { font-weight: 600; }
+    .nut-bar-label span:last-child { color: var(--text-muted); }
+    .nut-bar-track { height: 8px; background: var(--green-light); border-radius: 4px; overflow: hidden; }
+    .nut-bar-fill { height: 100%; background: var(--green); border-radius: 4px; }
+
+    .testimonials-bg { background: var(--white); }
+    .testimonial-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+    .testimonial-card { background: var(--bg); border-radius: var(--radius); padding: 24px; border: 1px solid var(--border); }
+    .stars { color: #f59e0b; font-size: 1rem; margin-bottom: 12px; }
+    .testimonial-text { font-size: 0.92rem; color: var(--text); margin-bottom: 16px; font-style: italic; }
+    .testimonial-author { display: flex; align-items: center; gap: 12px; }
+    .avatar { width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.9rem; color: var(--white); }
+    .author-name { font-weight: 600; font-size: 0.88rem; }
+    .author-sub { font-size: 0.78rem; color: var(--text-muted); }
+
+    .cta-section { background: var(--green); padding: 80px 24px; text-align: center; }
+    .cta-section h2 { font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 800; color: var(--white); margin-bottom: 12px; }
+    .cta-section p { color: rgba(255,255,255,.8); font-size: 1.05rem; margin-bottom: 32px; }
+    .btn-white { background: var(--white); color: var(--green); padding: 14px 32px; border-radius: 10px; font-size: 1rem; font-weight: 700; border: none; cursor: pointer; text-decoration: none; display: inline-block; transition: transform .15s; }
+    .btn-white:hover { transform: translateY(-2px); }
+
+    footer { background: #111; color: rgba(255,255,255,.6); padding: 40px 24px; text-align: center; font-size: 0.85rem; }
+    footer .footer-logo { color: var(--white); font-weight: 700; margin-bottom: 8px; }
+    footer a { color: rgba(255,255,255,.5); text-decoration: none; margin: 0 12px; }
+    footer a:hover { color: var(--white); }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="#" class="logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg>
+      EatSimply
+    </a>
+    <ul class="nav-links">
+      <li><a href="#recipes">Recipes</a></li>
+      <li><a href="#plan">Meal Plan</a></li>
+      <li><a href="#nutrition">Nutrition</a></li>
+      <li><a href="#" class="nav-cta">Get started</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-badge">🌿 Healthy eating made easy</div>
+  <h1>Eat well, every day,<br><span>without the stress</span></h1>
+  <p>Personalised meal plans, delicious recipes, and effortless nutrition tracking — all in one place.</p>
+  <div class="hero-actions">
+    <a href="#" class="btn-primary">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      Start for free
+    </a>
+    <a href="#recipes" class="btn-secondary">Browse recipes</a>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><div class="stat-num">500+</div><div class="stat-label">Healthy recipes</div></div>
+    <div class="stat"><div class="stat-num">12k+</div><div class="stat-label">Active users</div></div>
+    <div class="stat"><div class="stat-num">4.9★</div><div class="stat-label">Average rating</div></div>
+  </div>
+</div>
+
+<section class="how-bg">
+  <div class="section-inner">
+    <div class="section-label">How it works</div>
+    <div class="section-title">Simple as 1-2-3</div>
+    <div class="steps">
+      <div class="step"><div class="step-icon">🎯</div><h3>Set your goals</h3><p>Tell us your dietary preferences, allergies, and health goals.</p></div>
+      <div class="step"><div class="step-icon">📅</div><h3>Get your plan</h3><p>Receive a personalised weekly meal plan with a ready-made shopping list.</p></div>
+      <div class="step"><div class="step-icon">🍽️</div><h3>Cook &amp; track</h3><p>Follow simple recipes and log meals to track your nutrition automatically.</p></div>
+      <div class="step"><div class="step-icon">📈</div><h3>See progress</h3><p>Watch your health metrics improve week over week with clear insights.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="recipes">
+  <div class="section-inner">
+    <div class="section-label">Featured recipes</div>
+    <div class="section-title">Fresh ideas for every meal</div>
+    <p class="section-sub">Nutritionist-approved recipes that are quick to make and genuinely delicious.</p>
+    <div class="recipe-grid">
+      <div class="recipe-card"><div class="recipe-img" style="background:#fef9e7;">🥑</div><div class="recipe-body"><span class="recipe-tag">Breakfast</span><div class="recipe-title">Avocado Toast with Poached Egg</div><div class="recipe-meta"><span>⏱ 10 min</span><span>🔥 320 kcal</span></div><div class="recipe-actions"><button class="btn-sm btn-sm-primary">Add to plan</button><button class="btn-sm btn-sm-outline">Save</button></div></div></div>
+      <div class="recipe-card"><div class="recipe-img" style="background:#e8f5e9;">🥗</div><div class="recipe-body"><span class="recipe-tag">Lunch</span><div class="recipe-title">Greek Salad with Feta</div><div class="recipe-meta"><span>⏱ 15 min</span><span>🔥 280 kcal</span></div><div class="recipe-actions"><button class="btn-sm btn-sm-primary">Add to plan</button><button class="btn-sm btn-sm-outline">Save</button></div></div></div>
+      <div class="recipe-card"><div class="recipe-img" style="background:#fde8e8;">🍝</div><div class="recipe-body"><span class="recipe-tag">Dinner</span><div class="recipe-title">Lemon Herb Salmon Pasta</div><div class="recipe-meta"><span>⏱ 25 min</span><span>🔥 520 kcal</span></div><div class="recipe-actions"><button class="btn-sm btn-sm-primary">Add to plan</button><button class="btn-sm btn-sm-outline">Save</button></div></div></div>
+      <div class="recipe-card"><div class="recipe-img" style="background:#e8f0fe;">�ad</div><div class="recipe-body"><span class="recipe-tag">Snack</span><div class="recipe-title">Berry Protein Smoothie</div><div class="recipe-meta"><span>⏱ 5 min</span><span>🔥 210 kcal</span></div><div class="recipe-actions"><button class="btn-sm btn-sm-primary">Add to plan</button><button class="btn-sm btn-sm-outline">Save</button></div></div></div>
+      <div class="recipe-card"><div class="recipe-img" style="background:#fff3e0;">🍜</div><div class="recipe-body"><span class="recipe-tag">Dinner</span><div class="recipe-title">Thai Peanut Noodle Bowl</div><div class="recipe-meta"><span>⏱ 20 min</span><span>🔥 480 kcal</span></div><div class="recipe-actions"><button class="btn-sm btn-sm-primary">Add to plan</button><button class="btn-sm btn-sm-outline">Save</button></div></div></div>
+      <div class="recipe-card"><div class="recipe-img" style="background:#f3e8ff;">�ae</div><div class="recipe-body"><span class="recipe-tag">Lunch</span><div class="recipe-title">Spiced Chickpea Buddha Bowl</div><div class="recipe-meta"><span>⏱ 20 min</span><span>🔥 420 kcal</span></div><div class="recipe-actions"><button class="btn-sm btn-sm-primary">Add to plan</button><button class="btn-sm btn-sm-outline">Save</button></div></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="plan" class="plan-bg">
+  <div class="section-inner">
+    <div class="plan-grid">
+      <div>
+        <div class="section-label">Weekly planner</div>
+        <div class="section-title">Your week, sorted</div>
+        <p class="section-sub">Automatically generated meal plans tailored to your calories, macros, and taste.</p>
+        <a href="#" class="btn-primary">Build my plan</a>
+      </div>
+      <div>
+        <div class="plan-table">
+          <div class="plan-header">📅 This week's plan</div>
+          <div class="plan-row"><span class="plan-day">MON</span><span>Avocado Toast · Greek Salad · Salmon Pasta</span><span class="plan-kcal">1,840 kcal</span></div>
+          <div class="plan-row"><span class="plan-day">TUE</span><span>Berry Smoothie · Buddha Bowl · Thai Noodles</span><span class="plan-kcal">1,760 kcal</span></div>
+          <div class="plan-row"><span class="plan-day">WED</span><span>Oat Porridge · Lentil Soup · Grilled Chicken</span><span class="plan-kcal">1,920 kcal</span></div>
+          <div class="plan-row"><span class="plan-day">THU</span><span>Yoghurt Parfait · Caesar Salad · Veggie Stir-fry</span><span class="plan-kcal">1,680 kcal</span></div>
+          <div class="plan-row"><span class="plan-day">FRI</span><span>Eggs Florentine · Sushi Bowl · Baked Cod</span><span class="plan-kcal">1,800 kcal</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="nutrition">
+  <div class="section-inner">
+    <div class="plan-grid">
+      <div class="nut-card">
+        <h3>📊 Today's nutrition</h3>
+        <div class="nut-bar-row"><div class="nut-bar-label"><span>Calories</span><span>1,840 / 2,000 kcal</span></div><div class="nut-bar-track"><div class="nut-bar-fill" style="width:92%"></div></div></div>
+        <div class="nut-bar-row"><div class="nut-bar-label"><span>Protein</span><span>98 / 120 g</span></div><div class="nut-bar-track"><div class="nut-bar-fill" style="width:82%"></div></div></div>
+        <div class="nut-bar-row"><div class="nut-bar-label"><span>Carbohydrates</span><span>210 / 250 g</span></div><div class="nut-bar-track"><div class="nut-bar-fill" style="width:84%"></div></div></div>
+        <div class="nut-bar-row"><div class="nut-bar-label"><span>Fat</span><span>62 / 70 g</span></div><div class="nut-bar-track"><div class="nut-bar-fill" style="width:89%"></div></div></div>
+        <div class="nut-bar-row"><div class="nut-bar-label"><span>Fibre</span><span>24 / 30 g</span></div><div class="nut-bar-track"><div class="nut-bar-fill" style="width:80%"></div></div></div>
+      </div>
+      <div>
+        <div class="section-label">Nutrition tracking</div>
+        <div class="section-title">Know exactly what you're eating</div>
+        <p class="section-sub">Log meals in seconds and see your macros update in real time.</p>
+        <a href="#" class="btn-primary">Start tracking</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="testimonials-bg">
+  <div class="section-inner">
+    <div class="section-label">Testimonials</div>
+    <div class="section-title">People love EatSimply</div>
+    <p class="section-sub">Join thousands who've transformed their relationship with food.</p>
+    <div class="testimonial-grid">
+      <div class="testimonial-card"><div class="stars">★★★★★</div><p class="testimonial-text">&ldquo;I've tried every meal planning app out there. EatSimply is the only one I've actually stuck with.&rdquo;</p><div class="testimonial-author"><div class="avatar" style="background:#3a7d44;">S</div><div><div class="author-name">Sophie M.</div><div class="author-sub">Lost 8kg in 3 months</div></div></div></div>
+      <div class="testimonial-card"><div class="stars">★★★★★</div><p class="testimonial-text">&ldquo;As a busy parent I never had time to think about nutrition. EatSimply does all the planning for me.&rdquo;</p><div class="testimonial-author"><div class="avatar" style="background:#e07b39;">J</div><div><div class="author-name">James K.</div><div class="author-sub">Family of 4</div></div></div></div>
+      <div class="testimonial-card"><div class="stars">★★★★★</div><p class="testimonial-text">&ldquo;The nutrition tracking is so easy. I can actually see the impact on my energy levels.&rdquo;</p><div class="testimonial-author"><div class="avatar" style="background:#7c3aed;">P</div><div><div class="author-name">Priya L.</div><div class="author-sub">Marathon runner</div></div></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section">
+  <h2>Ready to eat simply?</h2>
+  <p>Start your free 14-day trial. No credit card required.</p>
+  <a href="#" class="btn-white">Get started for free →</a>
+</section>
+
+<footer>
+  <div class="footer-logo">🌿 EatSimply</div>
+  <p style="margin-bottom:12px"><a href="#">Recipes</a><a href="#">Meal Plans</a><a href="#">Nutrition</a><a href="#">About</a><a href="#">Privacy</a></p>
+  <p>&copy; 2026 EatSimply. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
